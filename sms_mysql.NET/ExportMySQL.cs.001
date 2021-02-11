@@ -1,0 +1,453 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.IO;
+
+using System.Data;
+using System.Data.SqlClient;
+
+using System.Diagnostics;
+using System.ServiceProcess;
+using System.Threading;
+
+using MySql.Data;
+using MySql.Data.MySqlClient;
+
+namespace sms_mysql.NET
+{
+    class ExportMySQL
+    {
+        SqlConnection con;
+        MySqlConnection mDB;
+
+        int MainID, DebugLevel;
+        string logMain;
+        string ErrStr, strExt, strTable;
+        private int Version, nRows;
+        string Shop;
+
+        private Dictionary<int, string> PosDb;
+
+        public ExportMySQL(string logName)
+        {
+            logMain = logName;
+
+            Version = 0;
+            Shop = "";
+            PosDb = new Dictionary<int, string>();
+        }
+
+        public void log(string str)
+        {
+            StreamWriter writer;
+            try
+            {
+                writer = new StreamWriter(logMain, true, System.Text.Encoding.GetEncoding(1251));
+            }
+            catch
+            {
+                return;
+            }
+            writer.WriteLine(String.Format("{0} {1}: {2}", DateTime.Now.ToShortDateString(), DateTime.Now.ToLongTimeString(), str));
+            writer.Close();
+        }
+
+        public void GetLine()
+        {
+            SqlDataReader reader;
+
+            reader = Program.ExecuteSqlReader(con, "select DISTINCT l.* from line l inner join CashLines cs ON cs.LineID=l.LineID", out ErrStr); ;
+            if (reader == null)
+            {
+                log(String.Format("Ошибка при чтени линеек касс : {0}", ErrStr));
+                return;
+            }
+
+            PosDb.Clear();
+
+            while (reader.Read())
+            {
+                PosDb.Add((int)reader["LineID"], reader["ExportDB"].ToString());
+                if (DebugLevel > 0)
+                    log(string.Format("Линейка {0} БД {1}", reader["LineID"], reader["ExportDB"]));
+                //ImportDataLine(reader["Name"].ToString(), reader["ImportDB"].ToString());
+            }
+            reader.Close();
+        }
+
+        bool Open()
+        {
+            SqlConnectionStringBuilder sqlBulder = new SqlConnectionStringBuilder();
+            sqlBulder["Persist Security Info"] = "True";
+            sqlBulder["Data Source"] = Program.cfg["SMS_Server"];
+            sqlBulder["User Id"] = Program.cfg["SMS_User"];
+            sqlBulder["Password"] = Program.cfg["SMS_Passwd"];
+            sqlBulder["Initial Catalog"] = Program.cfg["SMS_Baza"];
+            sqlBulder["Connection Lifetime"] = "0";
+
+            con = new SqlConnection(sqlBulder.ConnectionString);
+            con.Open();
+
+            MySqlConnectionStringBuilder mb = new MySqlConnectionStringBuilder();
+            mb.Server = Program.GetValue("MySQL_Server");
+            mb.UserID = Program.GetValue("MySQL_User");
+            mb.Password = Program.GetValue("MySQL_Passwd");
+            mb.CharacterSet = "utf8";
+
+            mDB = new MySqlConnection(mb.ConnectionString);
+            mDB.Open();
+
+            SqlDataReader reader = Program.ExecuteSqlReader(con,"SELECT ID FROM i_Managers where Name='Супермаг УКМ4'", out ErrStr );
+            if (reader == null)
+            {
+                log(String.Format("Ошибка при чтении i_Managers : {0}", ErrStr));
+                Close();
+                return false;
+            }
+            while (reader.Read())
+            {
+                MainID = (int)reader[0];
+                break;
+            }
+            reader.Close();
+
+            DebugLevel = 0;
+            GetLine();
+
+            return true;
+        }
+
+        void Close()
+        {
+            if (con.State != ConnectionState.Closed)
+            {
+                con.Close();
+            }
+            if (mDB.State != ConnectionState.Closed)
+            {
+                mDB.Close();
+            }
+        }
+
+        public bool ExecuteScalarMySql(string Query, out object res, out string ErrStr)
+        {
+            MySqlCommand cmd = mDB.CreateCommand();
+            try
+            {
+                cmd.CommandText = Query;
+                res = cmd.ExecuteScalar();
+                if (res == null) res = (int)0;
+                ErrStr = "";
+            }
+            catch (Exception e)
+            {
+                res = 0;
+                ErrStr = e.Message.Trim();
+
+                return false;
+            }
+
+            return true;
+        }
+
+        bool ExecuteNonQueryMySql( string Query)
+        {
+            MySqlCommand cmd = mDB.CreateCommand();
+            try
+            {
+                cmd.CommandText = Query;
+                nRows = cmd.ExecuteNonQuery();
+                ErrStr = "";
+            }
+            catch (Exception e)
+            {
+                nRows = 0;
+                ErrStr = e.Message.Trim();
+
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool SkipTable(SqlDataReader reader)
+        {
+            while (reader.Read())
+            {
+                string strField0 = reader.GetName(0);
+                //string strData = reader.GetString(0);
+
+            }
+
+            return true;
+        }
+
+        private bool SqlToMySQL(SqlDataReader reader, String table_name)
+        {
+            DataTable dataTable = new DataTable();
+            MySqlCommand command = mDB.CreateCommand();
+            string ErrStr;
+            object id;
+
+            try
+            {
+                if (!ExecuteScalarMySql(String.Format("DELETE FROM {0};", table_name), out id, out ErrStr))
+                {
+                    nRows = -1;
+                    log(String.Format("Ошибка при чистке таблицы {1} = {0}", ErrStr, table_name));
+                    return false;
+                }
+
+                dataTable.Load(reader);
+                DB.DBHelper.BulkInsert(dataTable.Select(), table_name, command);
+            }
+            catch (Exception e)
+            {
+                ErrStr = e.Message.Trim();
+                //Console.WriteLine(ErrStr);
+                log(String.Format("Ошибка при записи в таблицу {0} : {1}",table_name, ErrStr));
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool CheckSignal()
+        {
+            object id;
+            if (!ExecuteScalarMySql( "select count(*) c from `signal`;", out id, out ErrStr))
+            {
+                nRows = -1;
+                log(String.Format("Ошибка при чтении таблицы `signal` = {0}", ErrStr));
+                return false;
+            }
+
+            nRows = int.Parse(id.ToString());//(int)id;
+            return true;
+        }
+
+        private bool UpLoad(SqlDataReader reader)
+        {
+            strExt = "";
+            int cashID = -1;
+            int CashBusy = -1;
+            int state = -1;
+            string strUpdate = "";
+            object obj;
+
+            int LineID = -1;
+
+            do
+            {
+                switch (state)
+                {
+                    case -1:
+                        if (!reader.Read()) break;
+                        if ((reader.GetName(0) == "TABLE") && (reader[0].ToString() == "HEADER"))
+                        {
+                            state = 0;
+                            cashID = -1; CashBusy = -1;
+                            //strTable = "";
+                        }
+                        break;
+                    case 0:
+                        if (!reader.Read()) break;
+                        if (reader.GetName(0).ToUpper() == "CASHID")
+                        {
+                            if (LineID != -1)
+                            {
+                                if (CashBusy == 0)
+                                {
+                                    string strTemp;
+                                    strTemp = String.Format(" update #cashman set Processing=2 " +
+                                                                           "WHERE CashID IN (SELECT CashID FROM CashLines WHERE lineid={0})", cashID);
+                                    if (ExecuteNonQueryMySql( "INSERT INTO `signal` (`signal`,`version`) VALUES ('" + strExt.Trim() + "',0);"))
+                                    {
+                                        strUpdate += strTemp;
+                                    }
+                                    else
+                                        log(String.Format("Ошибка при добавлении в `signal` : {0}", ErrStr));
+                                }
+                            }
+
+                            state = 1;
+                            cashID = (int)reader[0];
+                            LineID = cashID;
+                            strExt = reader[1].ToString();
+                            string posKey = String.Format("Pos_{0}", cashID);
+                            if (!PosDb.ContainsKey(cashID))
+                            {
+                                log(String.Format("Кассовая линейка {0} ({1}) не прописана в конфиге", cashID, posKey));
+                                CashBusy = 1;
+                            }
+                            else
+                            {
+
+                                log(String.Format("Обработка кассовой линейки {0}", cashID));
+                                mDB.ChangeDatabase(PosDb[cashID]);
+
+                                if (!CheckSignal())
+                                {
+                                    log("*ОШИБКА* select * from signal : " + ErrStr);
+                                    CashBusy = 1;
+                                    break;
+                                }
+                                if (nRows != 0)
+                                {
+                                    log(String.Format("Линейка {0} занята...", cashID));
+                                    CashBusy = 1;
+                                    break;
+                                }
+                                CashBusy = 0;
+                            }
+                        }
+                        break;
+
+                    case 1:
+                        if (!reader.Read()) break;
+                        if ((reader.GetName(0) == "TABLE") && (reader[0].ToString() == "HEADER"))
+                        {
+                            if (CashBusy == 0)
+                            {
+                                strUpdate += String.Format("update #cashman set Processing=2 " +
+                                                                   "WHERE CashID IN (SELECT CashID FROM CashLines WHERE lineid={0})", cashID);
+                            }
+
+                            state = 0;
+                            cashID = -1; CashBusy = -1;
+                            strTable = "";
+                            break;
+                        }
+
+                        if (CashBusy == 1) break;
+                        if (reader.GetName(0).ToUpper() == "TABLE")
+                        {
+                            strTable = reader[0].ToString();
+                            state = 2;
+                        }
+                        break;
+
+                    case 2:
+                        if (CashBusy == 0)
+                        {
+//                            if (!CopyToTable(cMySql, reader))
+                            if (!SqlToMySQL(reader, strTable))
+                            {
+                                reader.Close();
+
+                                return false;
+                            }
+                        }
+                        else
+                            SkipTable(reader);
+
+                        //if ((nRows == 0) && (strExt == "upd"))
+                        //    File.Delete(Path.Combine(DirectoryDbf.Trim(), strTable.Trim() + ".DBF"));
+
+                        state = 1;
+                        break;
+                }
+
+            } while (reader.NextResult());
+
+            reader.Close();
+
+            if (LineID != -1)
+            {
+                if (CashBusy == 0)
+                {
+                    string strTemp;
+                    strTemp = String.Format(" update #cashman set Processing=2 " +
+                                                           "WHERE CashID IN (SELECT CashID FROM CashLines WHERE lineid={0})", cashID);
+                    if ( ExecuteNonQueryMySql( "INSERT INTO `signal` (`signal`,`version`) VALUES ('" + strExt.Trim() + "',0);") )
+                    {
+                        strUpdate += strTemp;
+                    }
+                    else
+                        log(String.Format("Ошибка при добавлении в `signal` : {0}", ErrStr));
+                }
+            }
+
+            if (strUpdate != "")
+            {
+                Program.ExecuteSqlNonQuery(con, strUpdate, out obj, out ErrStr);
+                if (ErrStr != "")
+                    log("*ОШИБКА* update #cashman set Processing=2 : " + ErrStr);
+            }
+
+            return true;
+        }
+
+        private bool UpLoadAllCash()
+        {
+            object obj;
+            string PriceListID = Program.GetValue("PriceList_ID");
+
+            if (!Program.ExecuteSqlNonQuery(con, "update #cashman set Processing=1", out obj, out ErrStr))
+            {
+                log(String.Format("Ошибка при выполнении \'update #cashman set Processing=1\'= {0}", ErrStr));
+                return false;
+            }
+
+            SqlDataReader reader = Program.ExecuteSqlReader(con, String.Format("exec i_sm_UKM '{0}', {1}, {2}", Shop.Trim(), Version, PriceListID), out ErrStr);
+            if (reader == null)
+            {
+                log(String.Format("Ошибка при выполнении \'i_sm_UKM\'= {0}", ErrStr));
+                return false;
+            }
+
+            if (!UpLoad(reader)) return false;
+
+            if (!Program.ExecuteSqlNonQuery(con, "i_sm_Commit", out obj, out ErrStr))
+            {
+                log(String.Format("Ошибка при выполнении \'i_sm_Commit\'= {0}", ErrStr));
+                return false;
+            }
+
+            log("================  Выгрузка на кассовые линейки завершена ================");
+
+            return true;
+        }
+
+        private bool CheckData()
+        {
+            string szFmtStart =  Properties.Resources.ResourceManager.GetString("ExportFmtStart");
+            SqlDataReader reader;
+
+            string Query = String.Format(szFmtStart, MainID);
+            reader = Program.ExecuteSqlReader(con, Query, out ErrStr);
+            if (reader == null)
+            {
+                log(Query);
+                log(String.Format("Ошибка при проверке наличия данных на выгрузку : {0}", ErrStr));
+                return false;
+            }
+            while (reader.Read())
+            {
+                reader.Close();
+                return true;
+            }
+            reader.Close();
+
+            return false;
+        }
+
+        public void Export()
+        {
+            Open();
+
+            try
+            {
+                if (CheckData()) UpLoadAllCash();
+            }
+            catch (Exception e)
+            {
+                ErrStr = e.Message.Trim();
+                log(String.Format("Ошибка при выгрузке : {0}", ErrStr));
+            }
+
+            Close();
+        }
+    }
+}

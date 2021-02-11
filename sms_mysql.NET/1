@@ -1,0 +1,12 @@
+SELECT DISTINCT 
+			 it.cash_id 
+			,it.receipt_header 
+			,it.id 
+			,it.position 
+			,it.item 
+			,tax.name, tax.percent, tax.amount 
+		FROM checks c 
+		INNER JOIN receipt r ON r.cash_id=c.cash_id AND r.id=c.id 
+		INNER JOIN receipt_item it ON it.cash_id=r.cash_id AND it.receipt_header=r.id 
+		INNER JOIN receipt_item_tax itax ON itax.cash_id=it.cash_id AND itax.receipt_item=it.id 
+		INNER JOIN receipt_tax tax ON tax.cash_id=itax.cash_id AND tax.id=itax.id

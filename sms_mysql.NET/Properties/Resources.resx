@@ -1,0 +1,634 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="CreateTemporaryTable" xml:space="preserve">
+    <value>
+                CREATE TABLE #ZReport    
+                (    
+                	ShiftID		int    
+                	, ReturnSum	money    
+                	, SaleSum	money    
+                ) 
+
+                CREATE TABLE #i_EGAIS_SAIL    
+                (    
+                	[ShopIndex] [varchar](100) NOT NULL, 
+                	[CashNumber] [int] NOT NULL, 
+                	[Znumber] [numeric](20, 0) NOT NULL, 
+                	[CheckNumber] [numeric](20, 0) NOT NULL, 
+                	[PosID] [numeric](20, 0) NOT NULL, 
+                	[Egais_Barcode] [varchar](200) NOT NULL 
+                )
+
+                CREATE TABLE #i_CHECK_EGAIS    
+                (    
+                	[ShopIndex] [varchar](100) NOT NULL, 
+                	[CashNumber] [int] NOT NULL, 
+                	[Znumber] [numeric](20, 0) NOT NULL, 
+                	[CheckNumber] [numeric](20, 0) NOT NULL, 
+					[Url]		varchar(2048) NOT NULL 
+                ) 
+				
+                CREATE TABLE #Shift(    
+                	[ShiftID] [int] NOT NULL,    
+                	[CashID] [int] NOT NULL,    
+                	[CashShiftNo] [int] NULL,    
+                	[OpenDate] [datetime] NULL,    
+                	[CloseDate] [datetime] NULL,    
+                	[SaleSum] [money] NULL,    
+                	[ReturnSum] [money] NULL,    
+                	[StornoSum] [money] NULL,    
+                	[StornoReturnSum] [money] NULL,    
+                	[ResultSum] [money] NULL,    
+                	[SaleCurrencySum] [money] NULL,    
+                	[ReturnCurrencySum] [money] NULL,    
+                	[StornoCurrencySum] [money] NULL,    
+                	[StornoReturnCurrencySum] [money] NULL,    
+                	[ResultCurrencySum] [money] NULL,    
+                	[MoneyBefore] [money] NULL,    
+                	[MoneyBeforeIn] [money] NULL,    
+                	[MoneyBeforeOut] [money] NULL,    
+                	[MoneyPeriodIn] [money] NULL,    
+                	[MoneyPeriodOut] [money] NULL,    
+                	[MoneyAfter] [money] NULL,    
+                	[IsProcessed] [tinyint] NULL    
+                ) 
+
+					CREATE TABLE #u_receipt (										
+					  store varchar(100) NOT NULL default '',						
+					  cash_number int NOT NULL default '0',							
+					  cash_id int NOT NULL default '0',								
+					  id bigint NOT NULL default '0',								
+					  global_number bigint NOT NULL default '0',					
+					  local_number bigint NOT NULL default '0',						
+					  type bigint default NULL,										
+					  stock_id bigint default NULL,									
+					  stock_name varchar(100) default NULL,							
+					  client varchar(40) default NULL,								
+					  login bigint default NULL,									
+					  shift_open bigint default NULL,								
+					  date datetime NOT NULL default '0000-00-00 00:00:00',			
+					  pos int NOT NULL default '0',									
+					  invoice_number varchar(100) default NULL,						
+					  link_receipt bigint default NULL,								
+					  link_cash_id bigint default NULL,								
+					  amount decimal(20,4) default NULL,							
+					  items_count bigint default NULL,								
+					  result bigint default NULL,									
+					  footer_date datetime default NULL,							
+					  client_card_code varchar(40) default NULL,					
+					  ext_processed int NOT NULL default '0',						
+					  PRIMARY KEY  (cash_id,id)										
+					)																
+																					
+					CREATE TABLE #u_shift (											
+					  store varchar(100) NOT NULL default '',						
+					  cash_number int NOT NULL default '0',							
+					  cash_id int NOT NULL default '0',								
+					  id bigint NOT NULL default '0',								
+					  number bigint NOT NULL default '0',							
+					  login bigint NOT NULL default '0',							
+					  date datetime NOT NULL default '0000-00-00 00:00:00',			
+					  sale decimal(20,4) NOT NULL default '0.0000',					
+					  [return] decimal(20,4) NOT NULL default '0.0000',				
+					  cancel decimal(20,4) NOT NULL default '0.0000',				
+					  cancel_return decimal(20,4) NOT NULL default '0.0000',		
+					  close_login bigint NOT NULL default '0',						
+					  close_date datetime default NULL,								
+					  ext_status int NOT NULL default '0',							
+					  PRIMARY KEY  (cash_id,id)										
+					)																
+																					
+					CREATE TABLE #u_login (											
+					  store varchar(100) NOT NULL default '',						
+					  cash_number int NOT NULL default '0',							
+					  cash_id int NOT NULL default '0',								
+					  id bigint NOT NULL default '0',								
+					  user_id bigint NOT NULL default '0',							
+					  date datetime NOT NULL default '0000-00-00 00:00:00',			
+					  user_name varchar(100) NOT NULL default '',					
+					  logout_date datetime default NULL,							
+					  PRIMARY KEY  (cash_id,id)										
+					)																
+																					
+					CREATE TABLE #u_receipt_item (									
+					  store varchar(100) NOT NULL default '',						
+					  cash_number int NOT NULL default '0',							
+					  cash_id int NOT NULL default '0',								
+					  id bigint NOT NULL default '0',								
+					  receipt_header bigint NOT NULL default '0',					
+					  var varchar(40) NOT NULL default '',							
+					  item varchar(40) NOT NULL default '',							
+					  name varchar(100) NOT NULL default '',						
+					  var_quantity decimal(20,4) default NULL,						
+					  quantity decimal(20,4) default NULL,							
+					  total_quantity decimal(20,4) NOT NULL default '0.0000',		
+					  price decimal(20,4) NOT NULL default '0.0000',				
+					  min_price decimal(20,4) NOT NULL default '0.0000',			
+					  blocked_discount tinyint NOT NULL default '0',				
+					  total decimal(20,4) default NULL,								
+					  stock_id bigint default NULL,									
+					  stock_name varchar(100) default NULL,							
+					  measurement varchar(100) NOT NULL default '',					
+					  measurement_precision bigint NOT NULL default '0',			
+					  classif bigint NOT NULL default '0',							
+					  type bigint NOT NULL default '0',								
+					  input bigint default NULL,									
+					  tax int default NULL,											
+					  position int NOT NULL default '0',							
+					  remain decimal(20,4) default NULL,							
+					  pricelist bigint default NULL,									
+					  real_amount decimal(20,4) default NULL,						
+					  seller_name varchar(100) NOT NULL default '',					
+					  seller_code varchar(50) NOT NULL default '',					
+					  sold_by_promo_price int default '0',							
+					  PRIMARY KEY  (cash_id,id)										
+					)																
+					CREATE TABLE #u_checks											
+					(																
+						store			varchar(100)								
+						, cash_number	int											
+						, cash_id		int											
+						, id			bigint										
+						, shift_open		bigint									
+						, shift_close_date	datetime								
+					)																
+																					
+					CREATE TABLE #u_receipt_payment (								
+					  store varchar(100) NOT NULL default '',						
+					  cash_number int NOT NULL default '0',							
+					  cash_id int NOT NULL default '0',								
+					  id bigint NOT NULL default '0',								
+					  receipt_header bigint default NULL,							
+					  [type] bigint default NULL,									
+					  payment_id bigint default NULL,								
+					  payment_name varchar(100) default NULL,						
+					  efts bigint default NULL,										
+					  amount decimal(20,4) default NULL,							
+					  amount_with_change decimal(20,4) default NULL,				
+					  card_number varchar(19) default NULL,							
+					  PRIMARY KEY  (cash_id,id)										
+					)																
+																					
+					CREATE TABLE #u_receipt_item_discount (							
+					  store varchar(100) NOT NULL default '',						
+					  cash_number int NOT NULL default '0',							
+					  cash_id int NOT NULL default '0',								
+					  id bigint NOT NULL default '0',								
+					  receipt_item bigint NOT NULL default '0',						
+					  base_total decimal(20,4) NOT NULL default '0.0000',			
+					  increment decimal(20,4) NOT NULL default '0.0000',			
+					  receipt_discount bigint NOT NULL default '0',					
+					  sequence tinyint NOT NULL default '0',						
+					  PRIMARY KEY  (cash_id,id)										
+					)																
+																					
+					CREATE TABLE #u_receipt_discounts (								
+					  store varchar(100) NOT NULL default '',						
+					  cash_number int NOT NULL default '0',                         
+					  cash_id int NOT NULL default '0',                             
+					  id bigint NOT NULL default '0',                               
+					  receipt_header bigint NOT NULL default '0',                   
+					  name varchar(100) NOT NULL default '',                        
+					  type tinyint NOT NULL default '0',                            
+					  discount_type bigint NOT NULL default '0',                    
+					  card_type int default NULL,                                   
+					  card_number varchar(19) default NULL,                         
+					  marketing_effort_id bigint NOT NULL default '0',              
+					  marketing_effort_name varchar(100) NOT NULL default '',       
+					  advertising_campaign_id bigint NOT NULL default '0',          
+					  advertising_campaign_name varchar(100) NOT NULL default '',   
+					  PRIMARY KEY  (cash_id,id)										
+					)																
+																					
+					CREATE TABLE #receipt_item_addition (							
+					  store varchar(100) NOT NULL default '',						
+					  cash_id int NOT NULL default '0',                             
+					  id bigint NOT NULL default '0',                               
+					  egais_barcode varchar(200),									
+					  deleted smallint NOT NULL DEFAULT 0							
+					)																
+																					
+					CREATE TABLE #tmp												
+					(																
+						store			varchar(100)								
+						, cash_number	int											
+						, cash_id		int											
+						, id			bigint										
+						, shift_open	bigint										
+						, shift_close_date	datetime								
+					)																
+
+
+   </value>
+  </data>
+  <data name="CREATE_Checks" xml:space="preserve">
+    <value>
+		CREATE TEMPORARY TABLE checks		
+		(									
+		store			varchar(100)	
+		, cash_number	int				
+		, cash_id		int				
+		, id			bigint			
+		, shift_open	bigint			
+		, shift_close_date	datetime	
+		) DEFAULT CHARSET=utf8;				
+   </value>
+  </data>
+  <data name="CREATE_shift_t" xml:space="preserve">
+    <value>
+		CREATE TEMPORARY TABLE shift_t				
+		(									
+			store			varchar(100)	
+			, cash_number	int				
+			, cash_id		int				
+			, id			bigint			
+			, date			datetime		
+			, close_date		datetime	
+		) DEFAULT CHARSET=utf8;
+   </value>
+  </data>
+  <data name="DeleteTemporaryTable" xml:space="preserve">
+    <value>
+                if object_id('tempdb..#i_Shift') is not null		
+                	  DROP TABLE #i_Shift							
+                if object_id('tempdb..#Shift') is not null		
+                	  DROP TABLE #Shift								
+                if object_id('tempdb..#i_CashPay') is not null	
+                	  DROP TABLE #i_CashPay							
+                if object_id('tempdb..#i_CashSail') is not null   
+                	  DROP TABLE #i_CashSail						
+                if object_id('tempdb..#i_CashDisc') is not null   
+                	  DROP TABLE #i_CashDisc						
+                if object_id('tempdb..#i_CashDcrd') is not null   
+                      DROP TABLE #i_CashDcrd						
+                if object_id('tempdb..#i_CashAuth') is not null   
+                	  DROP TABLE #i_CashAuth						
+                if object_id('tempdb..#ZReport') is not null		
+                	  DROP TABLE #ZReport							
+                if object_id('tempdb..#i_CashPayDiscount') is not null   
+                	  DROP TABLE #i_CashPayDiscount						
+                if object_id('tempdb..#i_CashSailDiscount') is not null   
+                	  DROP TABLE #i_CashSailDiscount						
+                if object_id('tempdb..#i_EGAIS_SAIL') is not null   
+                	  DROP TABLE #i_EGAIS_SAIL						
+                if object_id('tempdb..#i_CHECK_EGAIS') is not null   
+                	  DROP TABLE #i_CHECK_EGAIS						
+                if object_id('tempdb..#i_order_order') is not null   
+                	  DROP TABLE #i_order_order						
+
+		if object_id('tempdb..#tmp') is not null						
+			  DROP TABLE #tmp											
+																				
+		if object_id('tempdb..#u_receipt') is not null					
+			  DROP TABLE #u_receipt										
+		if object_id('tempdb..#u_shift') is not null					
+			  DROP TABLE #u_shift										
+		if object_id('tempdb..#u_login') is not null					
+			  DROP TABLE #u_login										
+		if object_id('tempdb..#u_receipt_item') is not null				
+			  DROP TABLE #u_receipt_item								
+		if object_id('tempdb..#u_checks') is not null					
+			  DROP TABLE #u_checks										
+		if object_id('tempdb..#u_receipt_payment') is not null			
+			  DROP TABLE #u_receipt_payment								
+		if object_id('tempdb..#u_receipt_item_discount') is not null	
+			  DROP TABLE #u_receipt_item_discount						
+		if object_id('tempdb..#receipt_item_addition') is not null	
+			  DROP TABLE #receipt_item_addition						
+   </value>
+  </data>
+  <data name="ExportFmtStart" xml:space="preserve">
+    <value>declare @ManID as int, @ret as int 
+set @ManID = {0}
+ 
+set nocount on 
+if OBJECT_ID('tempdb..#currdate') IS NOT NULL 
+ BEGIN 
+   IF NOT EXISTS(SELECT Code FROM Constants WHERE Code='Data_Time_From_File' AND Value='1') 
+		update #currdate set [date] = getdate() 
+ END 
+else 
+	select getdate() as [date] into #currdate 
+ 
+exec i_OnIdle @ManID 
+ 
+exec @ret = i_sm_IsAnyChanges @ManID 
+ 
+if @ret &gt; 0 
+begin 
+select 'select CashID, Processing from #cashman' 
+ 
+if OBJECT_ID('tempdb..#cashchng') is not null 
+    drop table #cashchng 
+ 
+if OBJECT_ID('tempdb..#cash_chng') is not null 
+    drop table #cash_chng 
+ 
+select * into #cashchng from i_CashDirtyChanges where 1=0 
+ 
+select * into #cash_chng from i_CashDirtyChanges where 1=0 
+ 
+if OBJECT_ID('tempdb..#cashman') is not null 
+    drop table #cashman 
+ 
+select CashID, ManagerID, 0 Processing into #cashman from i_ManagerCashes iMC where 1=0 
+ 
+exec i_sm_GetCashes @ManID	
+ 
+end
+   </value>
+  </data>
+  <data name="Create_u_receipt" xml:space="preserve">
+    <value>
+	SELECT 
+		  r.* 
+		, tr.shift_open Shift_ret
+		, tr.local_number local_number_ret
+		, tr.pos pos_ret
+		, tr.date date_ret
+	FROM checks c 
+	INNER JOIN receipt r ON r.cash_id=c.cash_id AND r.id=c.id
+	LEFT OUTER JOIN ukmserver.trm_out_receipt_header tr ON tr.id=r.link_receipt AND tr.cash_id=r.link_cash_id;
+   </value>
+  </data>
+  <data name="Create_u_shift" xml:space="preserve">
+    <value>
+		SELECT DISTINCT	
+			*				
+		FROM				
+		(					
+		SELECT DISTINCT	
+			s.*				
+		FROM checks c		
+		INNER JOIN receipt r ON r.cash_id=c.cash_id AND r.id=c.id			
+		INNER JOIN shift s ON  s.cash_id=r.cash_id AND s.id=r.shift_open	
+        
+		UNION		
+        
+		SELECT		
+		   *		
+		FROM Shift	
+		WHERE close_date is NOT NULL AND ext_status IN (0,3)
+		) X;
+   </value>
+  </data>
+  <data name="Create_u_login" xml:space="preserve">
+    <value>
+		SELECT DISTINCT 
+			l.* 
+		FROM checks c 
+		INNER JOIN receipt r ON r.cash_id=c.cash_id AND r.id=c.id 
+		INNER JOIN shift s ON  s.cash_id=r.cash_id AND s.id=r.shift_open 
+		INNER JOIN login l ON l.cash_id=r.cash_id AND l.id=r.login;
+    </value>
+  </data>
+  <data name="Create_u_receipt_item" xml:space="preserve">
+    <value>
+		SELECT DISTINCT 
+			ri.* 
+		FROM checks c 
+		INNER JOIN receipt_item as ri ON ri.cash_id=c.cash_id AND ri.receipt_header=c.ID;
+    </value>
+  </data>
+  <data name="Create_trm_out_receipt_egais" xml:space="preserve">
+    <value>
+		SELECT DISTINCT 
+			r.* 
+		FROM checks c		
+		INNER JOIN ukmserver.trm_out_receipt_egais r ON r.cash_id=c.cash_id AND r.id=c.id; 
+    </value>
+  </data>
+  <data name="Create_u_receipt_payment" xml:space="preserve">
+    <value>
+		SELECT DISTINCT 
+			rp.* 
+		FROM checks c 
+		INNER join receipt_payment as rp ON rp.cash_id=c.cash_id AND rp.receipt_header=c.ID;
+    </value>
+  </data>
+  <data name="Create_u_receipt_item_discount" xml:space="preserve">
+    <value>
+		SELECT DISTINCT 
+			rid.* 
+		FROM checks c 
+		INNER JOIN receipt_item as ri ON ri.cash_id=c.cash_id AND ri.receipt_header=c.ID 
+		INNER JOIN receipt_item_discount as rid ON rid.cash_id=ri.cash_id AND rid.receipt_item=ri.id;
+    </value>
+  </data>
+  <data name="Create_u_receipt_discount" xml:space="preserve">
+    <value>
+		SELECT DISTINCT 
+			rd.* 
+		FROM checks c 
+		INNER JOIN receipt r ON r.cash_id=c.cash_id AND r.id=c.id 
+		INNER JOIN receipt_discounts as rd ON rd.cash_id=r.cash_id AND rd.receipt_header=r.ID; 
+    </value>
+  </data>
+  <data name="s9_i_item_addition" xml:space="preserve">
+    <value>
+		SELECT																				
+			r.store as store																
+			, r.cash_id as cash_id															
+			, ri.id as id																	
+			, rita.egais_barcode as egais_barcode											
+			, 0 as deleted																	
+		FROM ukmserver.trm_out_receipt_item_addition rita																		
+		INNER JOIN receipt_item ri ON ri.cash_id = rita.cash_id AND ri.id = rita.id	
+		INNER JOIN receipt r ON r.cash_id=ri.cash_id AND r.id=ri.receipt_header							
+		INNER JOIN checks c ON c.cash_id=r.cash_id AND c.id=r.id;					
+    </value>
+  </data>
+  <data name="s9_i_item_egais" xml:space="preserve">
+    <value>
+		SELECT																				
+			r.store as store																
+			, r.cash_id as cash_id															
+			, ri.id as id																	
+			, rita.egais_barcode as egais_barcode											
+			, 0 as deleted																	
+		FROM checks c																		
+		INNER JOIN receipt r ON r.cash_id=c.cash_id AND r.id=c.id							
+		INNER JOIN receipt_item ri ON ri.cash_id = r.cash_id AND ri.receipt_header = r.id	
+		LEFT OUTER JOIN ukmserver.trm_out_receipt_item_egais rita						
+				ON rita.cash_id = ri.cash_id AND rita.id = ri.id							
+		WHERE rita.egais_barcode is NOT NULL;												
+    </value>
+  </data>
+  <data name="Create_u_receipt_item_tax" xml:space="preserve">
+    <value>
+		SELECT DISTINCT 
+			 r.cash_id 
+			,r.id receipt_header 
+			,it.id 
+			,it.position 
+			,it.item 
+			,tax.name, tax.percent, tax.amount 
+		FROM checks r 
+		INNER JOIN receipt_item it ON it.cash_id=r.cash_id AND it.receipt_header=r.id 
+		INNER JOIN receipt_item_tax itax ON itax.cash_id=it.cash_id AND itax.receipt_item=it.id 
+		INNER JOIN receipt_tax tax ON tax.cash_id=itax.cash_id AND tax.id=itax.id;
+    </value>
+  </data>
+  <data name="Create_u_receipt_order_order" xml:space="preserve">
+    <value>
+			SELECT
+			   A.*
+			FROM
+			(
+			SELECT DISTINCT
+				r.cash_id, r.pos, r.local_number, r.date, rtf.date close_date, rtf.result
+			   , rpv.value soft_check_no, too.deleted
+			--   , ri.position
+			--   , ri.item, ri.name, ri.total_quantity
+			FROM  checks ch 
+			INNER JOIN ukmserver.trm_out_receipt_header r ON r.cash_id=ch.cash_id AND r.id=ch.id
+			INNER JOIN ukmserver.trm_out_receipt_footer rtf ON rtf.cash_id=r.cash_id AND rtf.id=r.id
+			INNER JOIN ukmserver.trm_out_receipt_item ri USE INDEX(PRIMARY) ON ri.cash_id=r.cash_id AND ri.receipt_header=r.id
+			INNER JOIN ukmserver.trm_out_receipt_item_property_values ripv USE INDEX (item_property)      ON ripv.cash_id=ri.cash_id AND ripv.receipt_item=ri.id
+			INNER JOIN ukmserver.trm_out_receipt_property_values rpv USE INDEX (PRIMARY)      ON rpv.cash_id=ripv.cash_id AND rpv.id=ripv.property_id
+--			INNER JOIN ukmserver.trm_in_order_order too USE INDEX (PRIMARY) ON too.id=rpv.value AND too.store_id='15001'
+			INNER JOIN ukmserver.trm_in_order_order too USE INDEX (PRIMARY) ON too.id=rpv.value AND too.store_id=%store_id%
+			WHERE -- r.date &gt;= '20210101' AND 
+			      rtf.result=0
+			--  AND rtrim(rpv.value) = 'TSDAV00637746'
+			--  AND substring(rpv.value,1,3)='TSD'
+			) A
+			ORDER BY A.`date`
+    </value>
+  </data>
+  <data name="Create_i_order_order" xml:space="preserve">
+    <value>
+		SELECT
+			 c.ShiftID
+			,c.CheckID
+			,ur.soft_check_no BarCode
+			,CAST(SUBSTRING(ur.soft_check_no,8,6) as bigint) ZakazNo
+		INTO #i_order_order
+		FROM #u_receipt_order_order ur
+		INNER JOIN Checks c (NOLOCK) ON c.CashID=ur.pos AND c.CashCheckNo=ur.local_number AND c.CloseDate=ur.close_date
+    </value>
+  </data>
+  <data name="Insert_Check_Order_Order" xml:space="preserve">
+    <value>
+	INSERT INTO Check_Order_Order(ShiftID,CheckID,BarCode,ZakazNo)
+	SELECT ShiftID,CheckID,BarCode,ZakazNo FROM #i_order_order
+    </value>
+  </data>
+</root>
